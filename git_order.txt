@@ -1,0 +1,204 @@
+git init 初始化本地仓库
+git add 添加到本地仓库暂存区
+git commit 提交到本地仓库
+git status 查看当前未提交得记录，或者整个仓库的状态
+git log 查看提交的历史记录
+git log --pretty=oneline 查看提交的历史记录，并且每条记录以一行展示，git log的缩略版
+git reflog 查看历史操作记录
+git reset -–hard HEAD^ 回退到上一个版本
+git reset --hard a600527 回到指定版本
+git remote -v //查看当前远程仓库的名字和地址的信息列表
+git remote show remoteName //查看远程仓库remoteName的相信信息
+git remote add localName url //添加远程仓库信息
+git remote rename name1 name2
+git remote rm localName
+git config --list //查看当前的配置信息
+git log branchName //查看分支的log记录
+git grep "content" //在文本文件中搜索
+git show 12e49a7720fe92d5c19a8015fbc40a410e52370d 
+git show 12e49a7720fe92d5c19a8015fbc40a410e52370d  .........filePath
+git show a2ad2fe5e540a09a6224088863d45a93ac015389 | grep diff
+
+
+git目录简析：
+	工作区：能看到的目录、文件，或者是将来要建立的新目录、文件，都属于工作区。除了隐藏的目录.git之外！
+	版本库：Repository，工作区有一个隐藏目录.git，这个不属于工作区，是版本库，其中存储了很多东西，
+			最终要的就是stage(暂存区),还有Git为我们自动创建了第一个分支master，以及指向master的一个指针HEAD。
+	Git提交文件：
+		第一步：使用git add 吧文件添加到暂存区
+		第二步：使用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分之上。
+
+git的撤销修改：
+	在未提交修改文件之前，如果想撤销修改，有三种方法：
+		第一种方法：手动修改,add到暂存区,最后commit掉。
+		第二种方法：git reset -hard HEAD^ 回滚到上一个版本.
+		第三种方法：git checkout -- file 可以丢弃工作区的修改
+			有两种情况：
+				1.文件修改之后，还没有放到暂存区(没有add)，使用checkout命令，就回到了文件最新版本的状态
+				2.文件修改之后，放到了暂存区(add了),然后有做了修改，使用checkout命令，回到暂存区状态
+				
+git搭建SSH-key:
+	在git命令行中,使用命令 
+		ssh-keygen -t rsa -C "724380361@qq.com" 生成公私钥对
+	在github的setting中，SSH选项中,点击添加SSH,将pub中的内容复制即可
+
+
+git checkout -b branchName
+	创建branchName分支，并且切换过去
+git checkout branchName
+	切换分支
+	
+git add 是将文件变化存储到暂存区，暂存区是不区分分支的，所以暂存区的改动在所有的分支上多能看到，
+		将暂存区的修改commit到具体的分支上之后，其他分支就看不到修改的变化了。
+
+git fetch -all 获取所有的分支代码
+
+git fetch origin 获取最新的origin分支
+
+git merge origin/next 合并远程分支到当前分支(origin表示远程主机)
+
+git merge dev 合并dev分支到当前分支上（dev是当前分支）
+
+git branch -d dev 删除dev分支
+
+git branch 查看分支
+
+git branch name 创建分支
+
+git branch --set-upstream master origin/next 建立追踪关系
+
+git checkout name 切换分支
+
+现场的恢复和保存
+git stash --保存现场
+git stash apply --恢复现场
+git stash drop --删除stash保存记录
+git stash pop --恢复现场并删除stash保存记录
+
+git remote 查看远程分支
+git remote –v 查看远程分支详细信息
+
+git diff fileName ：查看某个文件工作区与暂存区中的差异
+git diff --staged fileName : 查看某个文件 工作区和暂存区的区别
+git diff SHA1 SHA2 比较两个commit版本之间的区别
+git diff SHA1 SHA2 fileName 比较两个commit版本之间的某个文件的区别
+git diff HEAD 当前版本在HEAD基础上的变化
+git diff HEAD~1  当前版本在HEAD基础上的变化
+git diff branch1 branch2 比较版本库中两个分支的区别
+git diff branch1 branch2 --stat 简洁的模式查看区别
+git diff branch1 查看branch1和当前分支的区别，省略默认的是当千分之
+
+设置本地分支和远程分支的链接
+git branch --set-upstream dev origin/dev
+
+git push:
+	
+	1.将本地分支的内容推送到远程分支上：
+		git push <远程主机名> <本地分支名>:<远程分支名>
+			其中：<远程分支名>可以省略，省略后，认为将本地分支名 推送到 origin主机上本地分支名相同的分支上
+			例如：git push origin master
+	2.删除远程分支：
+		2.1省略本地分支名，来删除远程分支
+			git push origin :<远程分支名>
+		2.2--delete命令删除
+			git push origin --delete master
+	3.新建远程分支:(现在本地建立对应的分支名，然后推送上去)
+		git push origin 分支名
+			如果分支名已经存在，则将本地的分支推送上去
+			如果分支名不存在，则创建远程分支名
+	4.push的matching和simple模式：
+		git config --global push.default matching
+			此时push的时候，会push所有匹配的分支
+		git config --global push.default simple
+			此时push的时候，会push当前分支
+	5.还有一种情况：
+		将本地所有分支都推送到origin主机，不管远程分支是否对应
+		git push -all origin
+		
+	6.如果远程的分支比本地的分支的版本更新：
+		push会报错，一般都是pull最新版本，然后合并手动处理冲突，最后commit提交后push.
+		如需强行push：git push --force origin
+		
+git pull:
+	git pull <远程主机名> <远程分支名>:<本地分支名>
+		git pull origin next:master
+		冒号后省略之后，就是合并到当前分支：
+			比如：git pull origin next
+			
+场景示例：
+	拉取分支下来后，本地修改
+	服务端分支更新了，
+		这时拉取：
+			拉取时：执行命令后，分支处于合并状态，此时首先要将本地的变更提交到版本库中，
+				    即commit（commit时要注意，要将本地所有的变更都提交，加-a或者-i参数）
+		这时提交：
+		
+
+Git基本常用命令如下：
+
+   mkdir：         XX (创建一个空目录 XX指目录名)
+
+   pwd：          显示当前目录的路径。
+
+   git init          把当前的目录变成可以管理的git仓库，生成隐藏.git文件。
+
+   git add XX       把xx文件添加到暂存区去。
+
+   git commit –m “XX”  提交文件 –m 后面的是注释。
+
+   git status        查看仓库状态
+
+   git diff  XX      查看XX文件修改了那些内容
+
+   git log          查看历史记录
+
+   git reset  –hard HEAD^ 或者 git reset  –hard HEAD~ 回退到上一个版本
+
+                        (如果想回退到100个版本，使用git reset –hard HEAD~100 )
+
+   cat XX         查看XX文件内容
+
+   git reflog       查看历史记录的版本号id
+
+   git checkout — XX  把XX文件在工作区的修改全部撤销。
+
+   git rm XX          删除XX文件
+
+   git remote add origin https://github.com/tugenhua0707/testgit 关联一个远程库
+
+   git push –u(第一次要用-u 以后不需要) origin master 把当前master分支推送到远程库
+
+   git clone https://github.com/tugenhua0707/testgit  从远程库中克隆
+
+   git checkout –b dev  创建dev分支 并切换到dev分支上
+
+   git branch  查看当前所有的分支
+
+   git checkout master 切换回master分支
+
+   git merge dev    在当前的分支上合并dev分支
+
+   git branch –d dev 删除dev分支
+
+   git branch name  创建分支
+
+   git stash 把当前的工作隐藏起来 等以后恢复现场后继续工作
+
+   git stash list 查看所有被隐藏的文件列表
+
+   git stash apply 恢复被隐藏的文件，但是内容不删除
+
+   git stash drop 删除文件
+
+   git stash pop 恢复文件的同时 也删除文件
+
+   git remote 查看远程库的信息
+
+   git remote –v 查看远程库的详细信息
+
+   git push origin master  Git会把master分支推送到远程库对应的远程分支上
+   
+git场景：
+	1.如何将单个文件重新reset
+		git reset commit_id 文件名字
+		git checkout -- 文件名字

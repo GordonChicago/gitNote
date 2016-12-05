@@ -1,0 +1,44 @@
+commit:
+	commit * -m 和 commit -m的区别：
+	1.
+		git commit * -m 'comment' 是将工作区的变化提交到版本库
+		git commit -m 'comment' 是将暂存区的变化提交到版本库
+		所以说：如果工作区的变化没有保存到暂存区，使用commit -m的命令是提交不到版本库
+	2.
+		如果远程版本要比本地的版本内容新,在push的时候，会出错,push不成功！
+		此时要使用pull命令，将新版本更新到本地，由于冲突，分支处于dev1|merging状态,
+		手动处理冲突后，add 到暂存区,
+		并且使用git commit -m 'comment'提交，意思是讲暂存区所有的变更提交上去
+		如果使用git commit * -m 'comment'提交，
+diff:
+	git diff  不加参数 是比较工作区与暂存区的区别
+	git diff HEAD 是比较工作区和版本库中的区别
+	git diff hash码 是比较工作区和和hash码版本的区别
+	git diff branch1 branch2 查看两个分支-版本库的区别(即最后一次提交)
+	git diff master...dev1 输出自dev1和master分别开发以来,master分支上的changed
+	git diff branch1 查看当前分支与branch1分支的差别
+	git diff SHA1 SHA2 比较两个历史版本的区别
+	git diff 本地分支 origin/远程分支名 fileName  比较某个文件在本地分支的和远程分支上的版本库中的区别
+	
+branch:
+	工作区和暂存区是不区分分支的:
+		1.当前分支为master,变更都已经提交
+		2.以master分支为基础，创建一个dev1分支---> git branch dev1 master
+		3.切换到dev1分支---->git checkout dev1
+		4.修改相应的文件,或者修改后add到暂存区
+		5.切换到master分支，是能够看到在dev1上的变更的.
+	    所以在使用AndroidStudio时，如果在同一个工作目录中切换分支的时候，最好先把当前分支commit本地
+		    在使用git命令的时候，如果不方便提交，比如工作做了一半，可使用git stash暂存起来
+			
+checkout:
+	检出远程分支，并指定一个本地分支名
+	git checkout -b local-branchname origin/remote_branchname  
+			
+-------注意以下两种场景使用区别---------
+克隆(已有一个远程仓库)：
+	当你从远程库克隆时候，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且远程库的默认名称是origin.
+
+git推送本地项目到github，做成一个远程版本库(新建一个远程仓库)：
+	github新建项目后，获取url地址;
+	git remote add origin url;添加远程缩略词:origin
+	然后使用push将分至推送上去.

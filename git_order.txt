@@ -18,6 +18,7 @@ git grep "content" //在文本文件中搜索
 git show 12e49a7720fe92d5c19a8015fbc40a410e52370d 
 git show 12e49a7720fe92d5c19a8015fbc40a410e52370d  .........filePath
 git show a2ad2fe5e540a09a6224088863d45a93ac015389 | grep diff
+gitk 很好的图形界面
 
 
 git目录简析：
@@ -59,6 +60,7 @@ git merge origin/next 合并远程分支到当前分支(origin表示远程主机)
 
 git merge dev 合并dev分支到当前分支上（dev是当前分支）
 
+git merge --no
 git branch -d dev 删除dev分支
 
 git branch 查看分支
@@ -67,6 +69,8 @@ git branch name 创建分支
 
 git branch --set-upstream master origin/next 建立追踪关系
 
+
+git branch -m oldbranchname newbranchname 本地分支重命名
 git checkout name 切换分支
 
 现场的恢复和保存
@@ -178,7 +182,8 @@ Git基本常用命令如下：
 
    git merge dev    在当前的分支上合并dev分支
 
-   git branch –d dev 删除dev分支
+   git branch –d dev 删除dev分支(只能删除被当前分支合并的分支)
+   git branch -D dev 强制删除分支
 
    git branch name  创建分支
 

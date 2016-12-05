@@ -1,0 +1,6 @@
+RxJava的基本语法：
+	1.创建Observer
+		Observer<String> observer = new Observer<String>(){};
+	2.
+	
+FuncX和ActionX的区别是：FuncX是有返回值的方法

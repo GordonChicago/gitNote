@@ -1,0 +1,21 @@
+adb shell 进入shell命令
+adb logcat
+adb shell logcat
+adb devices
+adb install <apk文件路径>
+adb uninstall <package>
+
+adb push 本地路径  远程路径
+adb pull 远程路径  本地路径
+adb remount
+
+查看进程信息
+adb shell ps
+adb shell ps | grep 'packageName'
+
+过滤某个应用的日志：
+adb logcat | grep packageName
+adb logcat | grep -i packageName
+
+查看隔断时间进程：
+adb shell top -d 5 | grep 'fangyan'

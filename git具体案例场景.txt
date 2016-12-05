@@ -1,0 +1,28 @@
+单个文件版本重置：
+	1.reset 
+		git log fileName --->列出该文件日志信息,并获取要重置 hash码
+		git reset hash码 fileName ---> 将fileName的hash码版本更新到暂存区,工作区内容还是没变化
+		git checkout -- fileName ---> 将fileName暂存区的状态同步到工作区,此时工作区的内容就是fileName的hash码版本.
+		--hard 模式，强制reset，文件变更不会存储到暂存区
+		--soft 模式，文件变更会存储到暂存区
+		git commit -m 'reset fileName' ---> 将fileName提交到版本库
+	2.revert
+		git revert hashcode (git revert 是生成一个新的提交来撤销某次提交，此次提交之前的commit都会被保留)
+
+		
+查看单个文件三大存储区的差异变化：
+	git diff fileName ：查看工作区与暂存区中的差异,暂存区保留着最后一次add的状态
+	git diff --staged fileName : 查看暂存区文件与上次提交的差异
+
+同一个远程分支代码冲突解决方案：
+
+不同分支合并时代码冲突解决方案：
+
+
+如何对比远程和本地版本 版本库中单个文件的差别:
+	git diff 本地分支 origin/远程分支名 fileName
+	
+配置SSH:
+	1.查看是否已经有了ssh密钥:cd ~/.ssh
+	2.生成密钥：
+		ssh-keygen -t rsa -C 'email'
